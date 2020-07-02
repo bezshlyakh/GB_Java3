@@ -34,7 +34,7 @@ public class ClientHandler {
                                     if(!server.isUserConnected(checkUserName)){
                                         userName = checkUserName;
                                         System.out.println(checkUserName + " connected");
-                                        out.writeUTF("/authOK");
+                                        out.writeUTF("/authOK " + userName);
                                         server.subscribe(ClientHandler.this);
                                         server.broadcastMsg("Master: " + userName + " join BOBO Chat" + "\n");
                                         sendMsg("Master: Welcome to BOBO Chat, Dear " + userName + "\n");
@@ -60,6 +60,7 @@ public class ClientHandler {
                                     DBService.changeUsername(userName, msgParts[1]);
                                     server.broadcastMsg("Master: " + userName + " changed nick to " + msgParts[1] + "\n");
                                     userName = msgParts[1];
+                                    out.writeUTF("/newNick " + userName);
                                     server.broadcastClientList();
                                 }
                             }

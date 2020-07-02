@@ -8,11 +8,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+
+import java.io.*;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -38,6 +39,8 @@ public class Controller implements Initializable {
     Socket clientSocket;
     DataInputStream in;
     DataOutputStream out;
+    String nick;
+    int hisToShow = 10;
 
     private AtomicBoolean isAuthorised = new AtomicBoolean();
 
@@ -124,10 +127,31 @@ public class Controller implements Initializable {
                         try {
                             while(true){
                                 String msg = in.readUTF();
-                                if(msg.equals("/authOK")){
+                                if(msg.startsWith("/authOK")){
+                                    String[] tokens = msg.split(" ", 2);
+                                    nick = tokens[1];
                                     setAuthorised(true);
+                                    ArrayList<String> history = readHistory(nick);
+                                    if(history.size() > 0){
+                                        if(history.size() <= hisToShow) {
+                                            for (String s : history) {
+                                                System.out.println("tis line: " + s);
+                                                chatArea.appendText(s + "\n");
+                                            }
+                                        } else {
+                                            for(int i = history.size() - hisToShow; i < hisToShow; i++){
+                                                chatArea.appendText(history.get(i) + "\n");
+                                            }
+                                        }
+                                    }
                                     break;
-                                } else{
+                                }
+                                if(msg.equals("/newNick")){
+                                    String[] tokens = msg.split(" ", 2);
+                                    nick = tokens[1];
+                                    break;
+                                }
+                                else{
                                     chatArea.appendText(msg);
                                 }
                             }
@@ -151,6 +175,10 @@ public class Controller implements Initializable {
                         } catch (IOException e) {
                             e.printStackTrace();
                         } finally {
+
+                            String[] history = chatArea.getText().split("\n");
+                            writeHistory(nick, history);
+
                             try {
                                 clientSocket.close();
                                 System.out.println("Socket closed");
@@ -177,6 +205,36 @@ public class Controller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void writeHistory(String nick, String[] msg){
+        try {
+            File historyFile = new File(nick + ".txt");
+            historyFile.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(historyFile, true));
+            writer.write(String.join("\n", msg));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<String> readHistory(String nick){
+        ArrayList<String> str = new ArrayList<>();
+        File historyFile = new File(nick + ".txt");
+        try {
+            historyFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (BufferedReader reader = new BufferedReader(new FileReader(historyFile))) {
+            String s;
+            while ( (s = reader.readLine()) != null) {
+                    str.add(s);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } return str;
     }
 
     public boolean isNotConnected(){
