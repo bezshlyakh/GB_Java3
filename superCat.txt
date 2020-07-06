@@ -10,3 +10,18 @@ Master: superCat join BOBO Chat
 
 
 Master: Welcome to BOBO Chat, Dear superCat
+Master: Welcome to BOBO Chat, Dear superCat
+
+superCat: ya supercat
+
+superCat: vse spat
+Master: superCat join BOBO Chat
+
+Master: superCat join BOBO Chat
+
+
+Master: Welcome to BOBO Chat, Dear superCat
+
+Bobo: hi
+
+superCat: hello

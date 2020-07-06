@@ -27,4 +27,16 @@ superCat: ya supercat
 
 superCat: vse spat
 
+Master: superCat left BOBO ChatMaster: Bobo join BOBO Chat
+
+
+Master: Welcome to BOBO Chat, Dear Bobo
+
+Master: superCat join BOBO Chat
+
+
+Bobo: hi
+
+superCat: hello
+
 Master: superCat left BOBO Chat
