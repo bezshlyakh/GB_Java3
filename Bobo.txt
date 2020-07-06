@@ -1,0 +1,30 @@
+Bobo: я боба
+
+Bobo: я собака уруруп
+
+Bobo: куку
+
+Bobo: где все?
+
+Bobo: .endBobo: я боба
+
+Bobo: я собака уруруп
+
+Bobo: куку
+
+Bobo: где все?
+
+Bobo: .end
+Master: Bobo join BOBO Chat
+
+
+Master: Welcome to BOBO Chat, Dear Bobo
+
+Master: superCat join BOBO Chat
+
+
+superCat: ya supercat
+
+superCat: vse spat
+
+Master: superCat left BOBO Chat
