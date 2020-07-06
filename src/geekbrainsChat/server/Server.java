@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
 
@@ -13,6 +15,7 @@ public class Server {
         clientsList = new Vector<>();
         ServerSocket serverSocket = null;
         Socket socket = null;
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
 
         try {
             DBService.dbConnect();
@@ -22,12 +25,16 @@ public class Server {
             while (true) {
                 socket = serverSocket.accept();
                 System.out.println("Client connected..");
-                new ClientHandler(this, socket);
+                Socket finalSocket = socket;
+                executorService.execute(() -> {
+                    executorService.execute(new ClientHandler(this, finalSocket));
+                });
             }
         } catch (IOException e) {
             System.out.println("Server initialization error");
         } finally {
             try {
+                executorService.shutdown();
                 socket.close();
             } catch (IOException e) {
                 System.out.println("Socket closing error");
