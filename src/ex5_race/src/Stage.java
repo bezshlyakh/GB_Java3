@@ -1,5 +1,3 @@
-package ru.geekbrains.homework5;
-
 public abstract class Stage {
     protected int length;
     protected String description;

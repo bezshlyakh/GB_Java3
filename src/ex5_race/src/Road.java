@@ -1,5 +1,3 @@
-package ru.geekbrains.homework5;
-
 public class Road extends Stage {
     public Road(int length) {
         this.length = length;
